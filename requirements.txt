@@ -1,0 +1,6 @@
+flask
+pytest
+gunicorn
+pandas
+selenium
+datetime
