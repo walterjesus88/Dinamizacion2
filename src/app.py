@@ -76,8 +76,16 @@ def _login():
     #options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--no-sandbox')
 
-    #driver = webdriver.Chrome(executable_path="./chromedriver")
-    driver = webdriver.Chrome(executable_path="C:\dina2\dina2\src\chromedriver.exe")
+    #driver = webdriver.Chrome(executable_path="./chromedriver")     
+    #options.add_argument("download.default_directory=C:\dina2\dina2\src\perf_filtro1")
+
+    
+    prefs = {'download.default_directory' : 'C:\dina2\dina2\src\perf_filtro1'}
+    options.add_experimental_option('prefs', prefs)
+
+
+
+    driver = webdriver.Chrome(executable_path="C:\dina2\dina2\src\chromedriver.exe",chrome_options=options)
     driver.maximize_window()
     driver.get("https://suite.npaw.com/MainKPIsPeru/Phantasia-DINA")   
     time.sleep(3)
@@ -193,7 +201,7 @@ def semanal_deportes(x,browser):
 
     time.sleep(1)
     #click en el canal
- 
+
     find_element_click('//*[@id="youbora__filters_wizard__tab_content_container"]/div[3]/div/table/tbody/div/tr[1]/td[1]/div/span/span[1]/input',browser)
     find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[1]/div/div/div[2]/div[1]/div[2]/input',"Include"+Keys.ENTER,browser)
     
@@ -201,12 +209,11 @@ def semanal_deportes(x,browser):
     time.sleep(2)
     #aplicar
     find_element_click('/html/body/div[4]/div[3]/div/div[2]/div/div/button[2]',browser)
-    time.sleep(2)
-    #suscribers = find_element_inner_html('//*[@id="fc446df0-cd91-4ba1-a33e-1bff36d845bd"]/div/div[2]/div/div/div[2]/p[1]',browser)                 
-    suscribers = find_element_inner_html('//*[@id="fc446df0-cd91-4ba1-a33e-1bff36d845bd"]/div/div[2]/div/div/div[2]/p[1]',browser)
-    hours = find_element_inner_html('//*[@id="52194ecc-0755-44a7-b329-3e2775623aa4"]/div/div[2]/div/div/div[2]/p',browser)
-    play = find_element_inner_html('//*[@id="41a8670a-cd0c-4126-be77-e35013d3462b"]/div/div[2]/div/div/div[2]/p',browser)
-
+    time.sleep(3)
+    suscribers = find_element_inner_html('/html/body/div[2]/main/div/div[1]/div[1]/div/div[2]/div/div/p',browser)
+    hours = find_element_inner_html('/html/body/div[2]/main/div/div[1]/div[4]/div/div[2]/div/div/p',browser)
+    play = find_element_inner_html('/html/body/div[2]/main/div/div[1]/div[12]/div/div[2]/div/div/p',browser)
+  
     total = { 'canal': CANAL+' '+FECHA,'suscribers':suscribers,'hours': hours,'plays': play}
     time.sleep(1)
 
@@ -264,17 +271,15 @@ def semanal_franja(x,browser):
     time.sleep(2)
     #aplicar
     find_element_click('/html/body/div[4]/div[3]/div/div[2]/div/div/button[2]',browser)
-    time.sleep(2)
+    time.sleep(3)
 
-    #find_element_click('//*[@id="youbora__filters_wizard__tab_content_container"]/div[3]/div/table/tbody/div/tr[1]/td[1]/div/span/span[1]/input',browser)
-    #find_element_key('/html/body/div[4]/div[3]/div/div[1]/div[3]/div/div[1]/div[1]/div/div/div[2]/div[1]/div[2]/div/input',"Include"+Keys.ENTER,browser)
-    #find_element_click('//*[@id="youbora__filters_wizard"]/div[3]/div/div[2]/div/div/button[2]',browser)
-    #time.sleep(2)
+    
+    
     
     print('--------suscribers')
-    suscribers = find_element_inner_html('//*[@id="fc446df0-cd91-4ba1-a33e-1bff36d845bd"]/div/div[2]/div/div/div[2]/p[1]',browser)
+    suscribers = find_element_inner_html('/html/body/div[2]/main/div/div[1]/div[1]/div/div[2]/div/div/p',browser)
     print('hours-----------')
-    hours = find_element_inner_html('//*[@id="52194ecc-0755-44a7-b329-3e2775623aa4"]/div/div[2]/div/div/div[2]/p',browser)
+    hours = find_element_inner_html('/html/body/div[2]/main/div/div[1]/div[4]/div/div[2]/div/div/p',browser)
 
     total = { 'canal': CANAL+' '+FECHA_INIT,'suscribers':suscribers,'hours': hours }
     time.sleep(2)
@@ -454,7 +459,7 @@ def index():
     #"hello "
     return render_template(
         'index.html',
-        data=[{'name':'VOD'}, {'name':'LIVE'}, {'name':'FRANJA'}])
+        data=[{'name':'VOD'}, {'name':'LIVE'}, {'name':'FRANJA'},{'name':'PERFORMANCE'}])
 
 @app.route("/test" , methods=['GET', 'POST'])
 def test():
@@ -478,6 +483,8 @@ def test():
        
     elif select == 'FRANJA':
         file = franja(browser)
+    elif select == 'PERFORMANCE':
+        file = performance(browser)
     else:
         vod(browser)
     #return(str(select))
@@ -516,6 +523,76 @@ def downloadFile ():
     #For windows you need to use drive name [ex: F:/Example.pdf]
     path = "../resultados_partidos1.xlsx"
     return send_file(path, as_attachment=True)
+
+
+def performance(browser):
+
+    p1='https://suite.npaw.com/v/ob-peru/analytics/PerformanceDiarioLIVE/PerformanceDiarioFiltro1LIVE'
+    p2='https://suite.npaw.com/v/ob-peru/analytics/PerformanceDiarioLIVE/PerformanceDiarioFiltro2LIVE'
+    p3='https://suite.npaw.com/v/ob-peru/analytics/PerformanceDiarioLIVE/PerformanceDiarioFiltro3LIVE'
+    p4='https://suite.npaw.com/v/ob-peru/analytics/PerformanceDiarioLIVE/PerformanceDiarioFiltro4LIVE'
+
+    
+
+    FECHA_INI='2022-12-05 00:00:00'
+    FECHA_FIN='2022-12-11 23:59:59'
+
+    time_ini= datetime.strptime(FECHA_INI, '%Y-%m-%d %H:%M:%S').time()
+    time_fin= datetime.strptime(FECHA_FIN, '%Y-%m-%d %H:%M:%S').time()
+ 
+   
+    browser.get(p1)
+    d = datetime.strptime(FECHA_INI, '%Y-%m-%d %H:%M:%S')
+    d_end = datetime.strptime(FECHA_FIN, '%Y-%m-%d %H:%M:%S')
+    dia  = str(d.strftime('%a %b %d %Y'))
+    dia_end  = str(d_end.strftime('%a %b %d %Y'))
+
+    DIA='//*[@id="date-picker-calendar"]//div[@aria-label="'+dia+'"]'
+    DIA_END='//*[@id="date-picker-calendar"]//div[@aria-label="'+dia_end+'"]'
+    print(DIA)
+    driver = browser
+    time.sleep(0.5) 
+
+    find_element_click("/html/body/div[2]/main/header/div[2]/div[1]/div[1]/div/div[2]/input",browser)
+    
+    time.sleep(2) 
+
+    driver.execute_script("arguments[0].click();", WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, DIA))))
+    driver.execute_script("arguments[0].click();", WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, DIA_END))))
+ 
+
+    # time.sleep(0.5) 
+    browser.find_element(By.XPATH,'//*[@id="date-picker-calendar"]/div[3]/div[1]/div[2]/div[2]/div/div/div/input').send_keys(Keys.CONTROL,"a")
+    browser.find_element(By.XPATH,'//*[@id="date-picker-calendar"]/div[3]/div[1]/div[2]/div[2]/div/div/div/input').send_keys(str(time_ini))
+ 
+    browser.find_element(By.XPATH,'//*[@id="date-picker-calendar"]/div[3]/div[1]/div[3]/div[2]/div/div/div/input').send_keys(Keys.CONTROL,"a")
+    browser.find_element(By.XPATH,'//*[@id="date-picker-calendar"]/div[3]/div[1]/div[3]/div[2]/div/div/div/input').send_keys(str(time_fin))
+    # #APPLY CALENDAR
+    browser.find_element(By.XPATH,'//*[@id="date-picker-calendar"]/div[3]/div[3]/button[2]').click()
+
+    # # GUARDAR FILTRO
+    # browser.find_element(By.XPATH,'//*[@id="148189"]/header/div[2]/div[5]/div[2]/button').click()
+    time.sleep(2) 
+    
+    # DESCARGAR CSV
+    browser.find_element(By.XPATH,'//*[@id="6b1ee97b-961f-49a6-972d-2f359e394023"]/div/div[1]/div[2]/div[1]/div').click()
+    time.sleep(1) 
+
+    # EXPORTAR
+
+    s=browser.find_element(By.XPATH,'/html/body/div[4]/div[3]/ul/li[5]')
+    time.sleep(2) 
+    s.click()
+    time.sleep(2) 
+    find_element_click('/html/body/div[4]/div[3]/ul/div/div/div/li[1]',browser)
+    
+
+
+
+
+    time.sleep(2) 
+
+
 
 if __name__ == "__main__":
     #app.run(debug=True)

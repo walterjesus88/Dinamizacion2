@@ -1,0 +1,7 @@
+('c:\\dina2\\dina2\\env\\lib\\site-packages\\chardet-5.1.0-py3.10.egg',
+ None,
+ {'*.py', '*.pyw', '*.cp310-win_amd64.pyd', 'EGG-INFO', '*.pyd', '*.pyc'},
+ 'DATA',
+ [('chardet\\py.typed',
+   'c:\\dina2\\dina2\\env\\lib\\site-packages\\chardet-5.1.0-py3.10.egg\\chardet\\py.typed',
+   'DATA')])
