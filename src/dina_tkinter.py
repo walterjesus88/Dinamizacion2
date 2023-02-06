@@ -25,10 +25,10 @@ class Application(tk.Tk):
         # first_button = tk.Button(self, text ="Hello World", command = hello)
         # first_button.pack(padx= 5, pady = 5)
 
-        transpuesta = tk.Button(self, text ="Transponer canales deportivos", command = transponer)
+        transpuesta = tk.Button(self, text ="Transponer canales deportivos", command = lambda: transponer('canales'))
         transpuesta.pack(padx= 15, pady = 10)
 
-        transpuestav = tk.Button(self, text ="Transponer mas vistos", command = transponer_masvistos)
+        transpuestav = tk.Button(self, text ="Transponer mas vistos", command = lambda: transponer('masvisto'))
         transpuestav.pack(padx= 15, pady = 10)
 
         live_partido = tk.Button(self, text ="live formato DEPORTES", command = live_formato)
@@ -56,7 +56,7 @@ def hello():
     Application.first_entry.delete(0,tk.END)
 
 def mas_vistos():
-    print('xxx')
+
     browser = _login()
     file = franja(browser)
 
@@ -113,10 +113,11 @@ def semanal_deportes(x,browser):
     #aplicar
     find_element_click('/html/body/div[4]/div[3]/div/div[2]/div/div/button[2]',browser)
     time.sleep(3)
-    suscribers = find_element_inner_html('/html/body/div[2]/main/div/div[1]/div[1]/div/div[2]/div/div/p',browser)
-    hours = find_element_inner_html('/html/body/div[2]/main/div/div[1]/div[4]/div/div[2]/div/div/p',browser)
-    play = find_element_inner_html('/html/body/div[2]/main/div/div[1]/div[12]/div/div[2]/div/div/p',browser)
-  
+    suscribers = find_element_inner_html('/html/body/div[2]/main/div[2]/div[1]/div[1]/div/div[2]/div/div/div[3]/p[1]',browser)
+                                          
+    hours = find_element_inner_html('/html/body/div[2]/main/div[2]/div[1]/div[4]/div/div[2]/div/div/div[3]/p',browser)
+    play = find_element_inner_html('/html/body/div[2]/main/div[2]/div[1]/div[12]/div/div[2]/div/div/div[3]/p[1]',browser)
+                                
     total = { 'canal': CANAL+' '+FECHA,'suscribers':suscribers,'hours': hours,'plays': play}
     time.sleep(1)
     return total
@@ -317,9 +318,10 @@ def semanal_franja(x,browser):
     time.sleep(3)
     
     print('--------suscribers')
-    suscribers = find_element_inner_html('/html/body/div[2]/main/div/div[1]/div[1]/div/div[2]/div/div/p',browser)
+    suscribers = find_element_inner_html('/html/body/div[2]/main/div[2]/div[1]/div[1]/div/div[2]/div/div/div[3]/p[1]',browser)                                          
+    
     print('hours-----------')
-    hours = find_element_inner_html('/html/body/div[2]/main/div/div[1]/div[4]/div/div[2]/div/div/p',browser)
+    hours = find_element_inner_html('/html/body/div[2]/main/div[2]/div[1]/div[4]/div/div[2]/div/div/div[3]/p',browser)
 
     total = { 'canal': CANAL+' '+FECHA_INIT,'suscribers':suscribers,'hours': hours }
     time.sleep(2)
@@ -391,40 +393,46 @@ def live_formato():
     print('save')
     
 
-def transponer():
-    df = pd.read_csv("../RES_FRANJAS.csv")
-    dr = []
+# def transponer():
+#     df = pd.read_csv("../RES_FRANJAS.csv")
+#     dr = []
 
-    week = ['lunes', 'martes', 'miercoles', 'jueves',
-                'viernes', 'sabado', 'domingo']
+#     horas = df['hours']
+#     hours_csv=trasnponer_detalle(horas)
+#     print(hours_csv)
+#     hours_csv.to_excel('CANALES_DEPORTIVOS.xlsx',index=False)                 
 
-    hr_df = pd.DataFrame({'week': week})
-    i=1
-    j=0
 
-    for chunk in df['hours']:
+    # week = ['lunes', 'martes', 'miercoles', 'jueves',
+    #             'viernes', 'sabado', 'domingo']
 
-        dr.append(chunk)
+    # hr_df = pd.DataFrame({'week': week})
+    # i=1
+    # j=0
 
-        if i%7==0:
-            j=j+1  
-            hh=str(j)   
+    # for chunk in df['hours']:
+
+    #     dr.append(chunk)
+
+    #     if i%7==0:
+    #         j=j+1  
+    #         hh=str(j)   
             
-            d2 = { hh: dr}
-            gg = pd.DataFrame(d2)
-            print(gg)
-            hr_df = hr_df.join(gg)
+    #         d2 = { hh: dr}
+    #         gg = pd.DataFrame(d2)
+    #         print(gg)
+    #         hr_df = hr_df.join(gg)
 
-            print(hr_df)
-            print(hr_df.T)
-            transponer= hr_df.T
-            transponer.to_excel('CANALES_DEPORTIVOS.xlsx',index=False)                 
-            dr=[]  
-        i=i+1
+    #         print(hr_df)
+    #         print(hr_df.T)
+    #         transponer= hr_df.T
+    #         transponer.to_excel('CANALES_DEPORTIVOS.xlsx',index=False)                 
+    #         dr=[]  
+    #     i=i+1
 
 
 
-def trasnponer_detalle(param):
+def transponer_detalle(param):
     
     week = ['lunes', 'martes', 'miercoles', 'jueves',
                 'viernes', 'sabado', 'domingo']
@@ -455,21 +463,31 @@ def trasnponer_detalle(param):
         i=i+1
     return transponer
 
-def transponer_masvistos():
-
+def transponer(tipo):
+    print('tipo')
+    print(tipo)
     df = pd.read_csv("../RES_FRANJAS.csv")
-    df_weekend=df.tail(10)
-    df=df.head(63)
-    horas = df['hours']
-    suscribers = df['suscribers']
+    
+    if tipo=='masvisto':
+        df_weekend=df.tail(10)
+        df=df.head(63)
+        horas = df['hours']
+        suscribers = df['suscribers']
 
-    hours_csv=trasnponer_detalle(horas)
-    suscribers_csv=trasnponer_detalle(suscribers)
+        hours_csv=transponer_detalle(horas)
+        suscribers_csv=transponer_detalle(suscribers)
 
-    with pd.ExcelWriter('CUADRO_DINA.xlsx') as writer:
-        hours_csv.to_excel(writer, sheet_name='HOURS', index = False)
-        suscribers_csv.to_excel(writer, sheet_name='SUSCRIBE', index = False)
-        df_weekend.to_excel(writer, sheet_name='FIN_SEMANA', index = False)
+        with pd.ExcelWriter('CUADRO_DINA.xlsx') as writer:
+            hours_csv.to_excel(writer, sheet_name='HOURS', index = False)
+            suscribers_csv.to_excel(writer, sheet_name='SUSCRIBE', index = False)
+            df_weekend.to_excel(writer, sheet_name='FIN_SEMANA', index = False)
+    elif tipo=='canales':
+        #dr = []
+
+        horas = df['hours']
+        hours_csv=transponer_detalle(horas)
+        print(hours_csv)
+        hours_csv.to_excel('CANALES_DEPORTIVOS.xlsx',index=False)  
     
 app = Application()
 app.mainloop()
