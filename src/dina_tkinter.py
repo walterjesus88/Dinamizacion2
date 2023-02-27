@@ -25,22 +25,22 @@ class Application(tk.Tk):
         # first_button = tk.Button(self, text ="Hello World", command = hello)
         # first_button.pack(padx= 5, pady = 5)
 
-        transpuesta = tk.Button(self, text ="Transponer canales deportivos", command = lambda: transponer('canales'))
-        transpuesta.pack(padx= 15, pady = 10)
+        # transpuesta = tk.Button(self, text ="Transponer canales deportivos", command = lambda: transponer('canales'))
+        # transpuesta.pack(padx= 15, pady = 10)
 
-        transpuestav = tk.Button(self, text ="Transponer mas vistos", command = lambda: transponer('masvisto'))
-        transpuestav.pack(padx= 15, pady = 10)
+        # transpuestav = tk.Button(self, text ="Transponer mas vistos", command = lambda: transponer('masvisto'))
+        # transpuestav.pack(padx= 15, pady = 10)
 
         live_partido = tk.Button(self, text ="live formato DEPORTES", command = live_formato)
         live_partido.pack(padx= 15, pady = 10)
 
-        mas_visto = tk.Button(self, text ="Más vistos", command = mas_vistos)
+        mas_visto = tk.Button(self, text ="Más vistos", command = lambda: mas_vistos('masvisto'))
         mas_visto.pack(padx= 5, pady = 5)
 
-        canal = tk.Button(self, text ="canales", command = mas_vistos)
+        canal = tk.Button(self, text ="canales", command = lambda: mas_vistos('canales'))
         canal.pack(padx= 5, pady = 5)
 
-        destacados = tk.Button(self, text ="destacados", command = mas_vistos)
+        destacados = tk.Button(self, text ="destacados", command = lambda: mas_vistos('destacados'))
         destacados.pack(padx= 5, pady = 5)
 
         partido = tk.Button(self, text ="partidos", command = deportes)
@@ -50,15 +50,15 @@ class Application(tk.Tk):
         Application.first_entry = tk.Entry(self, width = 30)
         Application.first_entry.pack(padx = 7, pady = 7)
 
-def hello():
-    x = Application.first_entry.get()
-    print(x)
-    Application.first_entry.delete(0,tk.END)
+# def hello():
+#     x = Application.first_entry.get()
+#     print(x)
+#     Application.first_entry.delete(0,tk.END)
 
-def mas_vistos():
+def mas_vistos(tipo):
 
     browser = _login()
-    file = franja(browser)
+    file = franja(browser,tipo)
 
 def deportes():
     print('partidos')
@@ -351,7 +351,7 @@ def convertir_hours(x):
 
     return aa1+a_hours
 
-def franja(browser):
+def franja(browser,tipo):
     franja =  pd.read_csv('../FRANJAS.csv')
     franja = franja[['canal','fecha_init','fecha_fin']]
     total_sus = []
@@ -370,6 +370,9 @@ def franja(browser):
     df.to_csv('../RES_FRANJAS.csv', index = None)
     #path = "../RES_FRANJAS.csv"
     #return send_file(path, as_attachment=True)
+
+    transponer(tipo)
+
 
 def live_formato():
     df = pd.read_excel("../NOTIFICACIONESMPLAY.xlsx")
@@ -487,7 +490,9 @@ def transponer(tipo):
         horas = df['hours']
         hours_csv=transponer_detalle(horas)
         print(hours_csv)
-        hours_csv.to_excel('CANALES_DEPORTIVOS.xlsx',index=False)  
+        hours_csv.to_excel('CANALES_DEPORTIVOS.xlsx',index=False) 
+    else:
+        print('esta opcion no es necesaria transponer')
     
 app = Application()
 app.mainloop()
