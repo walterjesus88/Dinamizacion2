@@ -10,36 +10,22 @@ import pandas as pd
 import time
 
 
-# In[16]:
-
 
 df = pd.read_excel("NOTIFICACIONESMPLAY.xlsx")
 df.tail()
 
 
-# In[17]:
 
 
-df[['TIPO DE CONTENIDO','LINK / NAME','TÍTULO','FECHA','HORA']]
-new_df=df[['TIPO DE CONTENIDO','LINK / NAME','TÍTULO','FECHA','HORA']]
-new_df['TIPO']=new_df['TIPO DE CONTENIDO']
+#df[['TIPO DE CONTENIDO','LINK / NAME','TÍTULO','FECHA','HORA']]
+#new_df=df[['TIPO DE CONTENIDO','LINK / NAME','TÍTULO','FECHA','HORA']]
+#new_df['TIPO']=new_df['TIPO DE CONTENIDO']
 new_df.shape
 
-
-# In[18]:
 
 
 #live =new_df[new_df.TIPO == 'LIVE']
 live=new_df
-
-
-# In[19]:
-
-
-live.shape
-
-
-# In[20]:
 
 
 def versus(msg):
@@ -79,7 +65,6 @@ def hora_mensaje(msg):
     return text
 
 
-# In[22]:
 
 
 def hora_mensaje2(msg):
@@ -87,41 +72,23 @@ def hora_mensaje2(msg):
     return texto
 
 
-# In[ ]:
-
-
-
-
-
-# In[23]:
-
-
-live.shape
-
-
-# In[24]:
 
 
 #def concatenar(texto)
 live['TÍTULO'] = live['TÍTULO'].apply(str)
+live['TÍTULO2'] = live['TÍTULO2'].apply(str)
+live['TÍTULO3'] = live['TÍTULO3'].apply(str)
 #live['title'] = live['TÍTULO'].apply(versus)
 #lives = live[live['title']==1]
-live['hora_mensaje'] = live['HORA'].apply(str)
+#live['hora_mensaje'] = live['HORA'].apply(str)
 #.apply(hora_mensaje)
 #lives
 #lives['hora_mensaje2'] = lives['MENSAJE'].apply(hora_mensaje2)
 
 
-# In[ ]:
 
 
-
-
-
-# In[25]:
-
-
-live = live[['TIPO','LINK / NAME','TÍTULO','FECHA','HORA','hora_mensaje']]
+#live = live[['TIPO','LINK / NAME','TÍTULO','FECHA','HORA','hora_mensaje']]
 live.head()
 live['FECHA']=live['FECHA'].astype(str)+ " "+ live['HORA'].astype(str)
 live['HORA']=live['HORA'].astype(str)
@@ -130,9 +97,9 @@ live['HORA']=live['HORA'].astype(str)
 # In[26]:
 
 
-live['concat'] = live['TIPO'] + "/"+live['LINK / NAME'] + " / " + live['TÍTULO'] + " / " + live['FECHA'] + " - "+ live['hora_mensaje']
-
-
+#live['concat'] = live['TIPO'] + "/"+live['LINK / NAME'] + " / " + live['TÍTULO'] + " / " + live['FECHA'] + " - "+ live['hora_mensaje']
+live['TÍTULO'] = live['TÍTULO'] + " "+live['TÍTULO2'] + " " + live['TÍTULO3']
+ 
 live.to_excel("live_formato.xlsx",encoding='utf-8')
 
 

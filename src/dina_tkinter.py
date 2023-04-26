@@ -70,8 +70,8 @@ def deportes():
 def semanal_deportes(x,browser):
     #calendar = browser.find_element_by_id('element-calendar').click()
     find_element_click("/html/body/div[2]/main/header/div[2]/div[1]/div[1]/div/div[2]/input",browser)
-    CANAL=x['canal']
-    FECHA=x['fecha']
+    CANAL=x['CANAL']
+    FECHA=x['FECHA2']
     time_ini= datetime.strptime(FECHA, '%Y-%m-%d %H:%M:%S').time()
     time_tuple =  datetime.strptime(FECHA, '%Y-%m-%d %H:%M:%S') +  timedelta(hours=1,minutes=59,seconds=59)
     time_2horas = time_tuple.time()
@@ -95,20 +95,27 @@ def semanal_deportes(x,browser):
     find_element_click('//*[@id="date-picker-calendar"]/div[3]/div[3]/button[2]',browser)
     #find_element_click('//*[@id="youbora__container"]/main/header/div[2]/button[2]',browser)
     find_element_click('//*[@id="youbora__sectionbox__sectionbox_toolbar"]',browser)
+
+    #codigo repetido
    
-    find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[2]/div/div/div[2]/div[1]/div[2]/input',"Device Type"+Keys.ENTER,browser)
+    find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[2]/div/div/div[1]/div[2]/input',"Device Type"+Keys.ENTER,browser)
+    find_element_click('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[2]/div/div/div[2]/div/ul/div/div[2]/div/li/div/p',browser)
+    #Elejir STB  
     find_element_click('//*[@id="youbora__filters_wizard"]//p[text()="STB"]',browser)
     #Exclude   
     find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[1]/div/div/div[2]/div[1]/div[2]/input',"Exclude"+Keys.ENTER,browser)
-
-    find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[2]/div/div/div[2]/div[1]/div[2]/input',"Title"+Keys.ENTER,browser)
+    find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[2]/div/div/div[1]/div[2]/input',"Title"+Keys.ENTER,browser)
+    find_element_click('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[2]/div/div/div[2]/div/ul/div/div[2]/div[2]/li/div/p',browser)
     find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[2]/div[2]/div[2]/input',CANAL,browser)
+
 
     time.sleep(1)
     #click en el canal
     find_element_click('//*[@id="youbora__filters_wizard__tab_content_container"]/div[3]/div/table/tbody/div/tr[1]/td[1]/div/span/span[1]/input',browser)
     find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[1]/div/div/div[2]/div[1]/div[2]/input',"Include"+Keys.ENTER,browser)
  
+    #fin codigo repetido
+
     time.sleep(2)
     #aplicar
     find_element_click('/html/body/div[4]/div[3]/div/div[2]/div/div/button[2]',browser)
@@ -123,8 +130,8 @@ def semanal_deportes(x,browser):
     return total
 
 def live(browser):
-    deportes =  pd.read_csv('../DEPORTES.csv')
-    deportes = deportes[['canal','fecha']]
+    deportes =  pd.read_excel('live_formato.xlsx')
+    deportes = deportes[['CANAL','FECHA2']]
     print(deportes)
     total_sus = []
     total_hou = []
@@ -133,9 +140,9 @@ def live(browser):
     time.sleep(2)
 
     for index,row in deportes.iterrows():
-        print(row['canal'])
-        print(row['fecha'])
-        x ={'canal':row['canal'],'fecha':row['fecha']}    
+        print(row['CANAL'])
+        print(row['FECHA2'])
+        x ={'CANAL':row['CANAL'],'FECHA2':row['FECHA2']}    
         #week_after = datetime.strptime(x['fecha'], '%Y-%m-%d %H:%M:%S') -  timedelta(days=7)     
 
         #x_before = {'canal': x['canal'],'fecha':str(week_after)}
@@ -199,9 +206,11 @@ def _login():
 
     time.sleep(3)
 
-    find_element_click('//*[@id="124581"]/div[1]/div[2]/button',driver) #eliminar filtro     
-    find_element_click('/html/body/div[4]/div[3]/div/div[3]/button[2]',driver) #confirmar eliminacion
+    find_element_click('//*[@id="124581"]/div[1]/div[2]/button',driver) #eliminar filtro  
+    time.sleep(1)
 
+    find_element_click('/html/body/div[4]/div[3]/div/div[3]/button[2]',driver) #confirmar eliminacion
+             
     return driver
 
 def find_element_key(path,sendkey,browser):
@@ -299,14 +308,18 @@ def semanal_franja(x,browser):
     #FILTER     
     #browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="youbora__sectionbox__sectionbox_toolbar"]'))))
     find_element_click('//*[@id="youbora__sectionbox__sectionbox_toolbar"]',browser)
-                   
-    find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[2]/div/div/div[2]/div[1]/div[2]/input',"Device Type"+Keys.ENTER,browser)
+                  
+    find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[2]/div/div/div[1]/div[2]/input',"Device Type"+Keys.ENTER,browser)
+    find_element_click('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[2]/div/div/div[2]/div/ul/div/div[2]/div/li/div/p',browser)
     #Elejir STB  
     find_element_click('//*[@id="youbora__filters_wizard"]//p[text()="STB"]',browser)
-    #Exclude   
+    #Exclude         
     find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[1]/div/div/div[2]/div[1]/div[2]/input',"Exclude"+Keys.ENTER,browser)
-    find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[2]/div/div/div[2]/div[1]/div[2]/input',"Title"+Keys.ENTER,browser)
+    find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[2]/div/div/div[1]/div[2]/input',"Title"+Keys.ENTER,browser)
+    find_element_click('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[1]/div[2]/div/div/div[2]/div/ul/div/div[2]/div[2]/li/div/p',browser)
+    #time.sleep(2)
     find_element_key('/html/body/div[4]/div[3]/div/div[1]/div/div[3]/div/div[2]/div[2]/div[2]/input',CANAL,browser)
+    #time.sleep(2)                  
 
     #click en el canal
     find_element_click('//*[@id="youbora__filters_wizard__tab_content_container"]/div[3]/div/table/tbody/div/tr[1]/td[1]/div/span/span[1]/input',browser)
@@ -354,6 +367,8 @@ def convertir_hours(x):
 def franja(browser,tipo):
     franja =  pd.read_csv('../FRANJAS.csv')
     franja = franja[['canal','fecha_init','fecha_fin']]
+   
+
     total_sus = []
     total_hou = []
     KPI = []
@@ -374,26 +389,40 @@ def franja(browser,tipo):
     transponer(tipo)
 
 
+# def live_formato():
+#     df = pd.read_excel("../NOTIFICACIONESMPLAY.xlsx")
+#     df.tail()
+
+#     df[['TIPO DE CONTENIDO','LINK / NAME','TÍTULO','FECHA','HORA']]
+#     new_df=df[['TIPO DE CONTENIDO','LINK / NAME','TÍTULO','FECHA','HORA']]
+#     new_df['TIPO']=new_df['TIPO DE CONTENIDO']
+#     new_df.shape
+#     live=new_df
+
+#     live['TÍTULO'] = live['TÍTULO'].apply(str)
+#     live['hora_mensaje'] = live['HORA'].apply(str)
+#     live = live[['TIPO','LINK / NAME','TÍTULO','FECHA','HORA','hora_mensaje']]
+#     live.head()
+#     live['FECHA']=live['FECHA'].astype(str)+ " "+ live['HORA'].astype(str)
+#     #live['HORA']=live['HORA'].astype(str)
+#     live['concat'] = live['TIPO'] + "/"+live['LINK / NAME'] + " / " + live['TÍTULO'] + " / " + live['FECHA'] + " - "+ live['hora_mensaje']
+
+#     live.to_excel("live_formato.xlsx",encoding='utf-8')
+#     print('save')
+
+
 def live_formato():
-    df = pd.read_excel("../NOTIFICACIONESMPLAY.xlsx")
-    df.tail()
+    live = pd.read_excel("../NOTIFICACIONESMPLAY.xlsx")
+  
+    live['TITULO'] = live['TITULO'].apply(str)
+    live['TITULO2'] = live['TITULO2'].apply(str)
+    live['TITULO3'] = live['TITULO3'].apply(str)
 
-    df[['TIPO DE CONTENIDO','LINK / NAME','TÍTULO','FECHA','HORA']]
-    new_df=df[['TIPO DE CONTENIDO','LINK / NAME','TÍTULO','FECHA','HORA']]
-    new_df['TIPO']=new_df['TIPO DE CONTENIDO']
-    new_df.shape
-    live=new_df
+    live['FECHA2']=live['FECHA'].astype(str)+ " "+ live['HORA'].astype(str)
+    live['HORA']=live['HORA'].astype(str)
 
-    live['TÍTULO'] = live['TÍTULO'].apply(str)
-    live['hora_mensaje'] = live['HORA'].apply(str)
-    live = live[['TIPO','LINK / NAME','TÍTULO','FECHA','HORA','hora_mensaje']]
-    live.head()
-    live['FECHA']=live['FECHA'].astype(str)+ " "+ live['HORA'].astype(str)
-    #live['HORA']=live['HORA'].astype(str)
-    live['concat'] = live['TIPO'] + "/"+live['LINK / NAME'] + " / " + live['TÍTULO'] + " / " + live['FECHA'] + " - "+ live['hora_mensaje']
-
+    live['PARTIDO'] = live['TITULO'] + " "+live['TITULO2'] + " " + live['TITULO3']    
     live.to_excel("live_formato.xlsx",encoding='utf-8')
-    print('save')
     
 
 # def transponer():
