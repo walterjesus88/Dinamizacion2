@@ -12,6 +12,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 import datetime
 from datetime import datetime, timedelta
 import os
+from pandas_ods_reader import read_ods
 
 class Application(tk.Tk):
      def __init__(self):
@@ -34,7 +35,7 @@ class Application(tk.Tk):
         live_partido = tk.Button(self, text ="live formato DEPORTES", command = live_formato)
         live_partido.pack(padx= 15, pady = 10)
 
-        mas_visto = tk.Button(self, text ="Más vistos", command = lambda: mas_vistos('masvisto'))
+        mas_visto = tk.Button(self, text ="Más vistos", command = lambda: mas_vistos('masvistos'))
         mas_visto.pack(padx= 5, pady = 5)
 
         canal = tk.Button(self, text ="canales", command = lambda: mas_vistos('canales'))
@@ -365,7 +366,17 @@ def convertir_hours(x):
     return aa1+a_hours
 
 def franja(browser,tipo):
-    franja =  pd.read_csv('../FRANJAS.csv')
+    
+    if tipo=='masvistos':
+        sheet='masvistos'
+    elif tipo=='canales':
+        sheet = "canales"
+    elif tipo=='destacados':
+        sheet = "destacados"
+
+    #franja =  pd.read_csv('../FRANJAS.csv')
+    franja = read_ods('../FRANJAS.ods' , sheet)
+    print(franja)
     franja = franja[['canal','fecha_init','fecha_fin']]
    
 

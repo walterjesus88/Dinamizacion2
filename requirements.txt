@@ -4,3 +4,4 @@ gunicorn
 pandas
 selenium
 datetime
+pandas_ods_reader
