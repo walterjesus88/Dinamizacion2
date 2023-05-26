@@ -511,7 +511,7 @@ def transponer(tipo):
     print(tipo)
     df = pd.read_csv("../RES_FRANJAS.csv")
     
-    if tipo=='masvisto':
+    if tipo=='masvistos':
         df_weekend=df.tail(10)
         df=df.head(63)
         horas = df['hours']

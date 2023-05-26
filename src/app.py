@@ -72,9 +72,10 @@ def find_element_inner_html(path,browser):
 def _login():
 
     options = webdriver.ChromeOptions()
+    options.add_argument("--incognito")
     #options.add_argument('--headless')
     #options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--no-sandbox')
+    #options.add_argument('--no-sandbox')
 
     #driver = webdriver.Chrome(executable_path="./chromedriver")     
     #options.add_argument("download.default_directory=C:\dina2\dina2\src\perf_filtro1")
