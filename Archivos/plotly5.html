@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+  <!-- <table id="myTable">
+  
+
+    <thead>
+      <tr>
+        <th>Columna 1</th>
+        <th>Columna 2</th>
+        <th>Columna 3</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Dato 1</td>
+        <td>Dato A</td>
+        <td>10</td>
+      </tr>
+      <tr>
+        <td>Dato 2</td>
+        <td>Dato B</td>
+        <td>20</td>
+      </tr>
+      <tr>
+        <td>Dato 3</td>
+        <td>Dato A</td>
+        <td>15</td>
+      </tr>
+      <tr>
+        <td>Dato 4</td>
+        <td>Dato C</td>
+        <td>12</td>
+      </tr>
+      <tr>
+        <td>Dato 5</td>
+        <td>Dato B</td>
+        <td>18</td>
+      </tr>
+    </tbody>
+  </table> -->
+
+  <div id="plot"></div>
+  <div id="plot2"></div>
+  <div id="pie"></div>
+
+  <script>
+    // $(document).ready(function() {
+    //   // Inicializar la tabla con DataTables
+    //   var table = $('#myTable').DataTable();
+
+    //   // Obtener los datos filtrados de la tabla
+    //   var filteredData = table.rows({ filter: 'applied' }).data().toArray();
+
+    //   // Obtener las columnas
+    //   var columns = table.columns().header().toArray().map(function(header) {
+    //     return $(header).text();
+    //   });
+
+    //   // Convertir los datos filtrados en un formato adecuado para Plotly.js
+    //   var plotData = columns.map(function(column, index) {
+    //     return {
+    //       x: filteredData.map(function(row) {
+    //         return row[index];
+    //       }),
+    //       type: 'bar',
+    //       name: column
+    //     };
+    //   });
+
+    //   // Configuración del layout del gráfico
+    //   var layout = {
+    //     title: 'Gráfico de datos filtrados',
+    //     barmode: 'group'
+    //   };
+
+    //   // Generar el gráfico con Plotly.js
+    //   Plotly.newPlot('plot', plotData, layout);
+    // });
+
+
+    // Datos de ejemplo
+var data1 = {
+  x: [1, 2, 3, 4],
+  y: [10, 15, 7, 12],
+  type: 'bar',
+  name: 'Datos 1'
+};
+
+var data2 = {
+  x: [1, 2, 3, 4],
+  y: [5, 10, 3, 8],
+  type: 'bar',
+  name: 'Datos 2'
+};
+
+var data3 = {
+  x: [1, 2, 3, 4],
+  y: [12, 8, 10, 15],
+  type: 'bar',
+  name: 'Datos 3'
+};
+
+// Crear los gráficos
+var trace1 = {
+  x: data1.x,
+  y: data1.y,
+  type: 'bar',
+  name: data1.name
+};
+
+var trace2 = {
+  x: data2.x,
+  y: data2.y,
+  type: 'bar',
+  name: data2.name
+};
+
+var trace3 = {
+  x: data3.x,
+  y: data3.y,
+  type: 'bar',
+  name: data3.name
+};
+
+// Definir los datos y las pestañas
+var data = [trace1, trace2, trace3];
+var layout = {
+  title: 'Gráficos con Pestañas',
+  updatemenus: [
+    {
+      buttons: [
+        {
+          method: 'relayout',
+          label: 'Datos 1',
+          args: ['title.text', 'Datos 1']
+        },
+        {
+          method: 'relayout',
+          label: 'Datos 2',
+          args: ['title.text', 'Datos 2']
+        },
+        {
+          method: 'relayout',
+          label: 'Datos 3',
+          args: ['title.text', 'Datos 3']
+        }
+      ],
+      direction: 'down',
+      pad: {'r': 10, 't': 10},
+      showactive: true,
+      type: 'buttons',
+      x: 0.1,
+      xanchor: 'left',
+      y: 1.1,
+      yanchor: 'top'
+    }
+  ]
+};
+
+// Crear la visualización con pestañas
+var config = {responsive: true};
+Plotly.newPlot('plot2', data, layout, config);
+
+
+
+// Datos de ejemplo
+var tabla = [
+  ['Nombre', 'Edad', 'Género'],
+  ['John', 30, 'Masculino'],
+  ['Mary', 25, 'Femenino'],
+  ['Peter', 40, 'Masculino']
+];
+
+// Crear la tabla HTML
+var tableHTML = '<table>';
+for (var i = 0; i < tabla.length; i++) {
+  tableHTML += '<tr>';
+  for (var j = 0; j < tabla[i].length; j++) {
+    tableHTML += '<td>' + tabla[i][j] + '</td>';
+  }
+  tableHTML += '</tr>';
+}
+tableHTML += '</table>';
+
+// Crear el objeto de datos para el gráfico de Pie Chart
+var data = [{
+  type: 'pie',
+  labels: ['John', 'Mary', 'Peter'],
+  values: [30, 25, 40]
+}];
+
+// Crear el objeto de diseño (layout) del gráfico
+var layout = {
+  title: 'Gráfico de Pie Chart con Tabla',
+  showlegend: true,
+  annotations: [
+    {
+      text: tableHTML,
+      x: 0,
+      y: 0,
+      showarrow: false,
+      font: {
+        family: 'Arial',
+        size: 12,
+        color: '#000000'
+      }
+    }
+  ]
+};
+
+// Crear y mostrar el gráfico
+Plotly.newPlot('pie', data, layout);
+
+
+
+
+
+
+
+// Importar el paquete plotly.js
+//import Plotly from 'plotly.js-dist';
+
+// Definir los datos de la tabla
+const tableData = [
+  ['Country', 'Population'],
+  ['China', 1398],
+  ['India', 1366],
+  ['United States', 329],
+  ['Indonesia', 269],
+  ['Brazil', 213],
+  ['Pakistan', 202],
+  ['Nigeria', 182],
+  ['Bangladesh', 162],
+  ['Russia', 144],
+];
+
+// Definir el trace de tipo tabla
+const tableTrace = {
+  type: 'table',
+  header: {
+    values: tableData[0],
+    align: ['center', 'center'],
+    line: { width: 1, color: 'black' },
+    fill: { color: 'grey' },
+    font: { family: 'Arial', size: 12, color: 'white' },
+  },
+  cells: {
+    values: tableData.slice(1),
+    align: ['center', 'center'],
+    line: { color: 'black', width: 1 },
+    font: { family: 'Arial', size: 11, color: ['black'] },
+    fill: { color: ['white', 'lightgrey'] },
+  },
+};
+
+// Crear el layout
+const layout = {
+  title: 'Tabla de población por país',
+};
+
+// Crear el gráfico
+Plotly.newPlot('myDiv', [tableTrace], layout);
+
+
+
+
+
+
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gráfico de Pie Chart y Tabla</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+  <div id="chart"></div>
+  <div id="table"></div>
+
+  <script>
+    // Leer el archivo JSON
+    // fetch('data.json')
+    //   .then(response => response.json())
+    //   .then(data => {
+
+    data =    {
+        "labels": ["Label 1", "Label 2", "Label 3"],
+        "values": [10, 20, 30],
+        "table": [
+        {"Column 1": "Value 1", "Column 2": "Value 2"},
+        {"Column 1": "Value 3", "Column 2": "Value 4"},
+        {"Column 1": "Value 5", "Column 2": "Value 6"}
+        ]
+    }
+
+  
+        // Crear el gráfico de Pie Chart
+        var pieTrace = {
+          type: 'pie',
+          values: data.values,
+          labels: data.labels,
+        };
+
+        var pieLayout = {
+          title: 'Gráfico de Pie Chart',
+        };
+
+        Plotly.newPlot('chart', [pieTrace], pieLayout);
+
+        // Crear la tabla
+        var tableHeader = Object.keys(data.table[0]);
+
+        var tableRows = data.table.map(row => Object.values(row));
+
+        var tableTrace = {
+          type: 'table',
+          header: {
+            values: tableHeader,
+            align: 'center',
+            line: { width: 1, color: 'black' },
+            fill: { color: 'grey' },
+            font: { family: 'Arial', size: 12, color: 'white' },
+          },
+          cells: {
+            values: tableRows,
+            align: 'center',
+            line: { color: 'black', width: 1 },
+            font: { family: 'Arial', size: 11, color: ['black'] },
+            fill: { color: ['white', 'lightgrey'] },
+          },
+        };
+
+        var tableLayout = {
+          title: 'Tabla de Datos',
+        };
+
+        Plotly.newPlot('table', [tableTrace], tableLayout);
+    //   })
+    //   .catch(error => console.error(error));
+  </script>
+</body>
+</html>

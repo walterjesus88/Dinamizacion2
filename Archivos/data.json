@@ -1,0 +1,10 @@
+{
+    "labels": ["Label 1", "Label 2", "Label 3"],
+    "values": [10, 20, 30],
+    "table": [
+      {"Column 1": "Value 1", "Column 2": "Value 2"},
+      {"Column 1": "Value 3", "Column 2": "Value 4"},
+      {"Column 1": "Value 5", "Column 2": "Value 6"}
+    ]
+  }
+  

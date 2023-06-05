@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Incluir la biblioteca de SheetJS -->
+  <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+  <!-- Incluir la biblioteca de Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+  <div id="myPlot"></div>
+  <input type="file" id="inputArchivo" accept=".xlsx">
+
+  <script>
+    // Leer un archivo Excel
+    var archivoExcel = 'Dinamización_23.05.01_23.05.07.xlsx';
+    var nombreHoja = 'Partidos';
+
+    var leerArchivo = function(e) {
+      var archivo = e.target.files[0];
+      var lector = new FileReader();
+
+      lector.onload = function(e) {
+        var data = new Uint8Array(e.target.result);
+        var workbook = XLSX.read(data, { type: 'array' });
+
+        // Obtener los datos de la hoja especificada
+        var hoja = workbook.Sheets[nombreHoja];
+        var jsonData = XLSX.utils.sheet_to_json(hoja, { header: 1 });
+
+        // Crear los datos de trazado para Plotly.js
+        var trace = {
+          x: jsonData[0], // Primera fila como datos del eje x
+          y: jsonData[1], // Segunda fila como datos del eje y
+          type: 'scatter'
+        };
+
+        var data = [trace];
+
+        // Configurar el diseño del gráfico
+        var layout = {
+          title: 'Gráfico de datos de hoja de Excel',
+          xaxis: { title: 'Eje X' },
+          yaxis: { title: 'Eje Y' }
+        };
+
+        // Crear el gráfico utilizando Plotly.js
+        Plotly.newPlot('myPlot', data, layout);
+      };
+
+      lector.readAsArrayBuffer(archivo);
+    };
+
+    // Escuchar el evento de cambio de archivo
+    document.getElementById('inputArchivo').addEventListener('change', leerArchivo, false);
+  </script>
+</body>
+</html>

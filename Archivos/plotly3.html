@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Incluir la biblioteca de Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- Incluir la biblioteca de Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+  <style>
+    #plotjsonxx {
+      width: 400px; /* Ancho deseado del contenedor */
+      height: 400px; /* Alto deseado del contenedor */
+      margin-bottom: auto;
+    }
+    #plotjson2xx {
+      width: 400px; /* Ancho deseado del contenedor */
+      height: 400px; /* Alto deseado del contenedor */
+      padding-bottom: -10%;
+    }
+  </style>
+</head>
+<body>
+  <!-- <div id="myPlot"></div> -->
+  <div id="myPlot"></div>
+  <div id="table"></div>
+  <div id="gg"></div>
+  <div id="myTable2"></div>
+  <div id="myTable3"></div>
+  <div id="myTable4"></div>
+  <div id="plotmenu"></div>
+  <div id="menu"></div>
+  <div id="masvistos"></div>
+  <div id="masvistos2"></div>
+  <div id="piecharts"></div>
+  <div id="plotjson"></div>
+  <div id="plotjson2"></div>
+  <div id="xxx"></div>
+  
+  
+  
+    <!-- <div class="container">
+        <div class="row">
+          <div class="col">
+            Column
+          </div>
+          <div class="col">
+            Column
+          </div>
+          <div class="col">
+            Column
+          </div>
+        </div>
+      </div> -->
+
+  <script>
+    // Código para crear y configurar los objetos en cada div
+    // var object1 = {
+    //   // Configuración del objeto 1
+    // };
+
+    // var object2 = {
+    //   // Configuración del objeto 2
+    // };
+
+    // var object3 = {
+    //   // Configuración del objeto 3
+    // };
+
+    // // Crear y configurar los objetos utilizando Plotly.js
+    // Plotly.newPlot('object1', object1.data, object1.layout);
+    // Plotly.newPlot('object2', object2.data, object2.layout);
+    // Plotly.newPlot('object3', object3.data, object3.layout);
+
+// var trace1 = {
+//   x: [1, 2, 3, 4],
+//   y: [10, 15, 13, 17],
+//   type: 'scatter',
+//   name: 'Gráfico 1'
+// };
+
+// var trace2 = {
+//   x: [1, 2, 3, 4],
+//   y: [16, 5, 11, 9],
+//   type: 'scatter',
+//   name: 'Gráfico 2'
+// };
+
+// var trace3 = {
+//   x: [1, 2, 3, 4],
+//   y: [12, 9, 15, 12],
+//   type: 'scatter',
+//   name: 'Gráfico 3'
+// };
+
+// var data = [trace1, trace2, trace3];
+
+// var layout = {
+//   title: 'Gráficos en una sola fila',
+//   grid: {rows: 1, columns: 3, pattern: 'linear'},
+//   subplot_titles: ['Gráfico 1', 'Gráfico 2', 'Gráfico 3']
+// };
+
+// Plotly.newPlot('myPlot', data, layout);
+
+
+var trace1 = {
+  values: [19, 26, 55],
+  labels: ['REPLAY', 'LIVE', 'VOD'],
+  type: 'pie',
+  name: 'Gráfico 1',
+  domain: {x: [0, 0.3]}
+};
+
+var trace2 = {
+  values: [30, 10, 60],
+  labels: ['X', 'Y', 'Z'],
+  type: 'pie',
+  name: 'Gráfico 2',
+  domain: {x: [0.35, 0.65]}
+};
+
+var trace3 = {
+  values: [45, 15, 40],
+  labels: ['P', 'Q', 'R'],
+  type: 'pie',
+  name: 'Gráfico 3',
+  domain: {x: [0.7, 1]}
+};
+
+var data = [trace1, trace2, trace3];
+
+var layout = {
+  title: 'Pie Charts en una sola fila',
+  grid: {rows: 1, columns: 3, pattern: 'linear'}
+};
+
+Plotly.newPlot('myPlot', data, layout);
+
+
+
+
+// Aqui viene las tablas
+    d3.csv("https://raw.githubusercontent.com/walterjesus88/Dinamizacion2/main/plotly/partidos.csv", function(err,rows) {
+    // Manipulación de datos
+        console.log(rows);
+        console.log(err);
+        function unpack(rows, key) {
+            return rows.map(function(row) { return row[key]; });
+        }
+
+        // header values
+        var headerNames = d3.keys(rows[0]);
+        console.log(headerNames)
+      
+        var headerValues = [headerNames[0],headerNames[1],headerNames[2],headerNames[4],headerNames[5],headerNames[6],headerNames[7],headerNames[8],
+                            headerNames[9]
+                            ];
+
+
+        // cell values
+        var cellValues = [];
+        for (i = 0; i < headerValues.length; i++) {
+            console.log(headerValues[i])
+            cellValue = unpack(rows, headerValues[i]);
+            console.log(cellValue)
+            cellValues[i] = cellValue;
+            
+        }
+        console.log(cellValues[0])
+        console.log(cellValues[1])
+        // clean date
+        for (i = 0; i < cellValues[0].length; i++) {
+            var dateValue = cellValues[0][i]
+            cellValues[0][i] = dateValue
+            console.log(dateValue)
+        }
+
+        //create table
+        var table = {
+            type: 'table',
+            columnwidth:  [400, 400,400, 200,200, 200,200, 200,200, 200,200, 200,] ,
+            columnorder: [0,1,2,3,4,5,6,7,8,9,10,11],
+            header: {
+            values: headerValues,
+            align: "center",
+            line: {width: 1, color: 'rgb(50, 50, 50)'},
+            fill: {color: ['rgb(235, 100, 230)']},
+            font: {family: "Arial", size: 11, color: "white"}
+            },
+            cells: {
+            values: cellValues,
+            align: ["center", "center"],
+            line: {color: "black", width: 1},
+            fill: {color: ['rgb(235, 193, 238)', 'rgba(228, 222, 249, 0.65)']},
+            font: {family: "Arial", size: 10, color: ["black"]}
+            },
+            xaxis: 'x',
+            yaxis: 'y',
+            //domain: {x: [0,0.9], y: [0]}
+        }
+
+        // create 1st plot
+        // var trace1 = {
+        //     x: unpack(rows, 'Plays'),
+        //     y: unpack(rows, 'Canal'),
+        //     xaxis: 'x1',
+        //     yaxis: 'y1',
+        //     mode: 'lines',
+        //     line: {width: 5, color: '#9748a1'},
+        //     name: 'hash-rate-TH/s'
+        // }
+        // // create 2nd plot
+        // var trace2 = {
+        //     x: unpack(rows, 'Date'),
+        //     y: unpack(rows, 'Mining-revenue-USD'),
+        //     xaxis: 'x2',
+        //     yaxis: 'y2',
+        //     mode: 'lines',
+        //     line: {width: 2, color: '#b04553'},
+        //     name: 'Mining-revenue-USD'
+        // }
+
+        // // create 3rd plot
+        // var trace3 = {
+        //     x: unpack(rows, 'Date'),
+        //     y: unpack(rows, 'Transaction-fees-BTC'),
+        //     xaxis: 'x3',
+        //     yaxis: 'y3',
+        //     mode: 'lines',
+        //     line: {width: 2, color: '#af7bbd'},
+        //     name: 'Transaction-fees-BTC'
+        // }
+
+        
+        var data = [table]
+        var data_graphic = [trace1]
+
+
+        // define subplot axes
+        var axis = {
+        showline: true,
+        zeroline: false,
+        showgrid: true,
+        mirror:true,
+        ticklen: 4,
+        gridcolor: '#ffffff',
+        tickfont: {size: 10},
+        }
+
+        var axis1 = {domain: [0.5, 1], anchor: 'y1', showticklabels: false}
+        var axis2 = {domain: [0.5, 1], anchor: 'y2', showticklabels: false}
+        var axis3 = {domain: [0.5, 1], anchor: 'y3'}
+        var axis4 = {domain: [0.66, 0.98], anchor: 'x1', hoverformat: '.2f'}
+        var axis5 = {domain: [0.34, 0.64], anchor: 'x2', tickprefix: '$', hoverformat: '.2f'}
+        var axis6 = {domain: [0.0, 0.32], anchor: 'x3', tickprefix: '\u20BF', hoverformat: '.2f'}
+
+        // define layout
+        var layout = {
+        title: "Partidos de la semama",
+        plot_bgcolor: 'rgba(228, 222, 249, 0.65)',
+        showlegend: false,
+        xaxis1: Object.assign(axis1,axis),
+        xaxis2: Object.assign(axis2,axis),
+        xaxis3: Object.assign(axis3,axis),
+        yaxis1: Object.assign(axis4,axis),
+        yaxis2: Object.assign(axis5,axis),
+        yaxis3: Object.assign(axis6,axis)
+        }
+
+        Plotly.newPlot('table', data, layout);
+        Plotly.newPlot('gg', data_graphic, layout);
+
+
+
+    });
+
+
+
+    d3.csv("https://raw.githubusercontent.com/walterjesus88/Dinamizacion2/main/plotly/partidos.csv", function(err,rows) {
+    // Manipulación de datos
+        console.log(rows);
+        console.log(err);
+        function unpack(rows, key) {
+            return rows.map(function(row) { return row[key]; });
+        }
+
+        // header values
+        var headerNames = d3.keys(rows[0]);
+        console.log(headerNames[0])
+      
+        var headerValues = [headerNames[0],headerNames[1],headerNames[2],headerNames[4],headerNames[5],headerNames[6],headerNames[7],headerNames[8],
+                            headerNames[9]
+                            ];
+
+
+        // cell values
+        var cellValues = [];
+        for (i = 0; i < headerValues.length; i++) {
+            console.log(headerValues[i])
+            cellValue = unpack(rows, headerValues[i]);
+            console.log(cellValue)
+            cellValues[i] = cellValue;
+            
+        }
+        console.log(cellValues[0])
+        console.log(cellValues[1])
+        // clean date
+        for (i = 0; i < cellValues[0].length; i++) {
+            var dateValue = cellValues[0][i]
+            cellValues[0][i] = dateValue
+            console.log(dateValue)
+        }
+
+        //create table
+        var table = {
+            type: 'table',
+            columnwidth:  [400, 400,400, 200,200, 200,200, 200,200, 200,200, 200,] ,
+            columnorder: [0,1,2,3,4,5,6,7,8,9,10,11],
+            header: {
+            values: headerValues,
+            align: "center",
+            line: {width: 1, color: 'rgb(50, 50, 50)'},
+            fill: {color: ['rgb(235, 100, 230)']},
+            font: {family: "Arial", size: 11, color: "white"}
+            },
+            cells: {
+            values: cellValues,
+            align: ["center", "center"],
+            line: {color: "black", width: 1},
+            fill: {color: ['rgb(235, 193, 238)', 'rgba(228, 222, 249, 0.65)']},
+            font: {family: "Arial", size: 10, color: ["black"]}
+            },
+            xaxis: 'x',
+            yaxis: 'y',
+            //domain: {x: [0,0.9], y: [0]}
+        }
+
+        // add table to chart   
+        
+        var data = [table]
+
+        // define subplot axes
+        var axis = {
+        showline: true,
+        zeroline: false,
+        showgrid: true,
+        mirror:true,
+        ticklen: 4,
+        gridcolor: '#ffffff',
+        tickfont: {size: 10},
+        }
+
+        var axis1 = {domain: [0.5, 1], anchor: 'y1', showticklabels: false}
+        var axis2 = {domain: [0.5, 1], anchor: 'y2', showticklabels: false}
+        var axis3 = {domain: [0.5, 1], anchor: 'y3'}
+        var axis4 = {domain: [0.66, 0.98], anchor: 'x1', hoverformat: '.2f'}
+        var axis5 = {domain: [0.34, 0.64], anchor: 'x2', tickprefix: '$', hoverformat: '.2f'}
+        var axis6 = {domain: [0.0, 0.32], anchor: 'x3', tickprefix: '\u20BF', hoverformat: '.2f'}
+
+        // define layout
+        var layout = {
+        title: "Partidos de la semama",
+        plot_bgcolor: 'rgba(228, 222, 249, 0.65)',
+        showlegend: false,
+        xaxis1: Object.assign(axis1,axis),
+        xaxis2: Object.assign(axis2,axis),
+        xaxis3: Object.assign(axis3,axis),
+        yaxis1: Object.assign(axis4,axis),
+        yaxis2: Object.assign(axis5,axis),
+        yaxis3: Object.assign(axis6,axis)
+        }
+
+        Plotly.newPlot('franja', data, layout);
+    });
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+
+d3.csv("https://raw.githubusercontent.com/walterjesus88/Dinamizacion2/main/plotly/masvistohour.csv", function(err,rows) {
+    // Manipulación de datos
+        console.log(rows);
+        console.log(err);
+        function unpack(rows, key) {
+            return rows.map(function(row) { return row[key]; });
+        }
+        // header values
+        var headerNames = d3.keys(rows[0]);
+       
+        var headerValues = [headerNames[0],headerNames[1],headerNames[2],headerNames[3],headerNames[4],headerNames[5],headerNames[6],headerNames[7],headerNames[8],
+                            headerNames[9],headerNames[10],headerNames[11],headerNames[12],headerNames[13],headerNames[14]
+                            ];
+        // cell values
+        var cellValues = [];
+        for (i = 0; i < headerValues.length; i++) {
+            console.log(headerValues[i])
+            cellValue = unpack(rows, headerValues[i]);         
+            cellValues[i] = cellValue;            
+        }
+        for (i = 0; i < cellValues[0].length; i++) {
+            var dateValue = cellValues[0][i]
+            cellValues[0][i] = dateValue
+            console.log(i)
+            console.log(dateValue)                  
+        }
+
+        //create table
+        var table = {
+            type: 'table',
+            columnwidth:  [1200, 200,200, 200,200, 200,200, 200,200, 200,200, 200,200, 200,200] ,
+            columnorder: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14],
+            header: {
+            values: headerValues,
+            align: "center",
+            line: {width: 1, color: 'rgb(50, 50, 50)'},
+            fill: {color: ['rgb(235, 100, 230)']},
+            font: {family: "Arial", size: 11, color: "white"}
+            },
+            cells: {
+            values: cellValues,
+            align: ["center", "center"],
+            line: {color: "black", width: 1},
+            fill: {color: ['rgb(235, 193, 238)', 'rgba(228, 222, 249, 0.65)']},
+            font: {family: "Arial", size: 10, color: ["black"]}
+            },
+            xaxis: 'x',
+            yaxis: 'y',
+            //domain: {x: [0,0.9], y: [0]}
+        }
+
+        // add table to chart           
+        var data = [table]
+
+        // define subplot axes
+        var axis = {
+        showline: true,
+        zeroline: false,
+        showgrid: true,
+        mirror:true,
+        ticklen: 4,
+        gridcolor: '#ffffff',
+        tickfont: {size: 10},
+        }
+
+        var axis1 = {domain: [0.5, 1], anchor: 'y1', showticklabels: false}
+        var axis2 = {domain: [0.5, 1], anchor: 'y2', showticklabels: false}
+        var axis3 = {domain: [0.5, 1], anchor: 'y3'}
+        var axis4 = {domain: [0.66, 0.98], anchor: 'x1', hoverformat: '.2f'}
+        var axis5 = {domain: [0.34, 0.64], anchor: 'x2', tickprefix: '$', hoverformat: '.2f'}
+        var axis6 = {domain: [0.0, 0.32], anchor: 'x3', tickprefix: '\u20BF', hoverformat: '.2f'}
+
+        // define layout
+        var layout = {
+        title: "Más Vistos-U",
+        plot_bgcolor: 'rgba(228, 222, 249, 0.65)',
+        showlegend: false,
+        xaxis1: Object.assign(axis1,axis),
+        xaxis2: Object.assign(axis2,axis),
+        xaxis3: Object.assign(axis3,axis),
+        yaxis1: Object.assign(axis4,axis),
+        yaxis2: Object.assign(axis5,axis),
+        yaxis3: Object.assign(axis6,axis)
+        }
+
+        Plotly.newPlot('masvistos', data, layout);
+    });
+
+
+ //////////////////////////////////////////////   
+ d3.csv("https://raw.githubusercontent.com/walterjesus88/Dinamizacion2/main/plotly/masvistohour2.csv", function(err,rows) {
+    // Manipulación de datos
+        console.log(rows);
+        console.log(err);
+        function unpack(rows, key) {
+            return rows.map(function(row) { return row[key]; });
+        }
+
+        // header values
+        var headerNames = d3.keys(rows[0]);
+        console.log(headerNames[0])
+      
+        var headerValues = [headerNames[0],headerNames[1],headerNames[2],headerNames[3],headerNames[4],headerNames[5],headerNames[6],headerNames[7],headerNames[8],
+                            headerNames[9],headerNames[10],headerNames[11],headerNames[12],headerNames[13],headerNames[14]
+                            ];
+
+        console.log(headerValues)                  
+        // cell values
+        var cellValues = [];
+        for (i = 0; i < headerValues.length; i++) {
+            console.log(headerValues[i])
+            cellValue = unpack(rows, headerValues[i]);
+            console.log(cellValue)
+            cellValues[i] = cellValue;
+            
+        } 
+        // clean date
+        for (i = 0; i < cellValues[0].length; i++) {
+            var dateValue = cellValues[0][i]
+            cellValues[0][i] = dateValue
+            console.log(dateValue)
+        }
+
+        //create table
+        var table = {
+            type: 'table',
+            columnwidth:  [800, 200,200, 200,200, 200,200, 200,200, 200,200, 200,200, 200,200] ,
+            columnorder: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14],
+            header: {
+            values: headerValues,
+            align: "center",
+            line: {width: 1, color: 'rgb(50, 50, 50)'},
+            fill: {color: ['rgb(235, 100, 230)']},
+            font: {family: "Arial", size: 11, color: "white"}
+            },
+            cells: {
+            values: cellValues,
+            align: ["center", "center"],
+            line: {color: "black", width: 1},
+            fill: {color: ['rgb(235, 193, 238)', 'rgba(228, 222, 249, 0.65)']},
+            font: {family: "Arial", size: 10, color: ["black"]}
+            },
+            xaxis: 'x',
+            yaxis: 'y',
+            //domain: {x: [0,0.9], y: [0]}
+        }
+
+        // add table to chart   
+        
+        var data = [table]
+
+        // define subplot axes
+        var axis = {
+        showline: true,
+        zeroline: false,
+        showgrid: true,
+        mirror:true,
+        ticklen: 4,
+        gridcolor: '#ffffff',
+        tickfont: {size: 10},
+        }
+
+        var axis1 = {domain: [0.5, 1], anchor: 'y1', showticklabels: false}
+        var axis2 = {domain: [0.5, 1], anchor: 'y2', showticklabels: false}
+        var axis3 = {domain: [0.5, 1], anchor: 'y3'}
+        var axis4 = {domain: [0.66, 0.98], anchor: 'x1', hoverformat: '.2f'}
+        var axis5 = {domain: [0.34, 0.64], anchor: 'x2', tickprefix: '$', hoverformat: '.2f'}
+        var axis6 = {domain: [0.0, 0.32], anchor: 'x3', tickprefix: '\u20BF', hoverformat: '.2f'}
+
+        // define layout
+        var layout = {
+        title: " sabados domingos",
+        plot_bgcolor: 'rgba(228, 222, 249, 0.65)',
+        showlegend: false,
+        xaxis1: Object.assign(axis1,axis),
+        xaxis2: Object.assign(axis2,axis),
+        xaxis3: Object.assign(axis3,axis),
+        yaxis1: Object.assign(axis4,axis),
+        yaxis2: Object.assign(axis5,axis),
+        yaxis3: Object.assign(axis6,axis)
+        }
+
+        Plotly.newPlot('masvistos2', data, layout);
+    });
+ //////////////////////////////////////////////   
+
+var data = [{
+  type: 'table',
+  header: {
+    values: ['Columna 1', 'Columna 2', 'Columna 3','Columna 1', 'Columna 2', 'Columna 3','Columna 1', 'Columna 2', 'Columna 3','Columna 1', 'Columna 2', 'Columna 3'],
+    align: 'center',
+    line: {width: 1, color: 'black'},
+    fill: {color: 'grey'},
+    font: {family: 'Arial', size: 12, color: 'white'}
+  },
+  cells: {
+    values: [
+      ['Dato 1', 'Dato 2', 'Dato 3'],
+      ['Dato 4', 'Dato 5', 'Dato 6'],
+      ['Dato 7', 'Dato 8', 'Dato 9']
+    ],
+    align: 'center',
+    line: {color: 'black', width: 1},
+    font: {family: 'Arial', size: 11, color: ['black']}
+  },
+  columnwidth: [100, 200, 150,100, 200, 150,100, 200, 150,100, 200, 150] // Configura el ancho de las columnas aquí
+}];
+
+var layout = {
+  title: 'Tabla con ancho de columna personalizado'
+};
+
+Plotly.newPlot('myTable2', data, layout);
+
+
+
+var data = [{
+  type: 'table',
+  header: {
+    values: ['Columna 1', 'Columna 2', 'Columna 3'],
+    align: 'center',
+    line: {width: 1, color: 'black'},
+    fill: {color: 'grey'},
+    font: {family: 'Arial', size: 12, color: 'white'},
+    filter: {
+      values: ['', 'Filtro 1', 'Filtro 2'],
+      line: {color: 'black', width: 1},
+      font: {family: 'Arial', size: 11, color: 'black'}
+    }
+  },
+  cells: {
+    values: [
+      ['Dato 1', 'Dato 2', 'Dato 3'],
+      ['Dato 4', 'Dato 5', 'Dato 6'],
+      ['Dato 7', 'Dato 8', 'Dato 9']
+    ],
+    align: 'center',
+    line: {color: 'black', width: 1},
+    font: {family: 'Arial', size: 11, color: ['black']}
+  }
+}];
+
+var layout = {
+  title: 'Tabla con filtros'
+};
+
+Plotly.newPlot('myTable3', data, layout);
+
+
+// Datos de ejemplo
+var data = [
+  { Columna1: 'Dato 1', Columna2: 'Dato A' },
+  { Columna1: 'Dato 2', Columna2: 'Dato B' },
+  { Columna1: 'Dato 3', Columna2: 'Dato A' },
+  { Columna1: 'Dato 4', Columna2: 'Dato C' },
+  { Columna1: 'Dato 5', Columna2: 'Dato B' },
+];
+
+// Función para aplicar el filtro
+function aplicarFiltro(columna, valor) {
+  var datosFiltrados = data.filter(function(row) {
+    return row[columna] === valor;
+  });
+
+  // Actualizar la tabla con los datos filtrados
+  actualizarTabla(datosFiltrados);
+}
+
+// Función para actualizar la tabla
+function actualizarTabla(datos) {
+  var columnas = Object.keys(datos[0]);
+
+  var tabla = {
+    type: 'table',
+    header: {
+      values: columnas,
+      align: 'center',
+      line: {width: 1, color: 'black'},
+      fill: {color: 'grey'},
+      font: {family: 'Arial', size: 12, color: 'white'}
+    },
+    cells: {
+      values: columnas.map(function(columna) {
+        return datos.map(function(row) {
+          return row[columna];
+        });
+      }),
+      align: 'center',
+      line: {color: 'black', width: 1},
+      font: {family: 'Arial', size: 11, color: ['black']}
+    }
+  };
+
+  var layout = {
+    title: 'Tabla con filtros'
+  };
+
+  Plotly.newPlot('myTable4', [tabla], layout);
+}
+
+// Mostrar la tabla inicialmente sin filtros
+actualizarTabla(data);
+
+
+
+//menu
+// Datos de ejemplo
+var data1 = {
+  x: [1, 2, 3, 4],
+  y: [10, 15, 7, 12],
+  type: 'bar',
+  name: 'Datos 1'
+};
+
+var data2 = {
+  x: [1, 2, 3, 4],
+  y: [5, 10, 3, 8],
+  type: 'bar',
+  name: 'Datos 2'
+};
+
+var data3 = {
+  x: [1, 2, 3, 4],
+  y: [12, 8, 10, 15],
+  type: 'bar',
+  name: 'Datos 3'
+};
+
+// Definir los botones del menú
+var menuButtons = [
+  {
+    label: 'Datos 1',
+    method: updateData,
+    args: [data1]
+  },
+  {
+    label: 'Datos 2',
+    method: updateData,
+    args: [data2]
+  },
+  {
+    label: 'Datos 3',
+    method: updateData,
+    args: [data3]
+  }
+];
+
+// Función para actualizar los datos del gráfico
+function updateData(data) {
+  Plotly.restyle('plot', data);
+}
+
+// Configuración del layout
+var layout = {
+  title: 'Gráfico con Menú',
+  barmode: 'group',
+  updatemenus: [
+    {
+      buttons: menuButtons,
+      direction: 'down',
+      showactive: true
+    }
+  ]
+};
+
+// Crear el gráfico
+Plotly.newPlot('plotmenu', [data1], layout);
+
+
+
+
+// Datos de ejemplo
+var data1 = {
+  x: [1, 2, 3, 4],
+  y: [10, 15, 7, 12],
+  type: 'bar',
+  name: 'Datos 1'
+};
+
+var data2 = {
+  x: [1, 2, 3, 4],
+  y: [5, 10, 3, 8],
+  type: 'bar',
+  name: 'Datos 2'
+};
+
+var data3 = {
+  x: [1, 2, 3, 4],
+  y: [12, 8, 10, 15],
+  type: 'bar',
+  name: 'Datos 3'
+};
+
+// Definir los botones del menú
+var menuButtons = [
+  {
+    label: 'Datos 1',
+    method: updateData,
+    args: [data1]
+  },
+  {
+    label: 'Datos 2',
+    method: updateData,
+    args: [data2]
+  },
+  {
+    label: 'Datos 3',
+    method: updateData,
+    args: [data3]
+  }
+];
+
+// Función para actualizar los datos del gráfico
+function updateData(data) {
+  Plotly.restyle('plot', data);
+}
+
+// Configuración del layout
+var layout = {
+  title: 'Gráfico con Menú',
+  barmode: 'group',
+  updatemenus: [
+    {
+      buttons: menuButtons,
+      direction: 'down',
+      showactive: true,
+      title: 'Seleccionar Datos' // Encabezado del menú
+    }
+  ]
+};
+
+// Crear el gráfico
+Plotly.newPlot('menu', [data1], layout);
+
+
+
+
+// Datos de ejemplo
+var tablax = [
+  ['REPLAY', 13],
+  ['LIVE', 30],
+  ['VOD', 50],
+
+];
+
+
+
+function unpack(rows, key) {
+            return rows.map(function(row) { return row[key]; });
+        }
+
+var tabla = [
+  { segmento: 'REPLAY', total: 13 },
+  { segmento: 'LIVE', total: 30 },
+  { segmento: 'VOD', total: 50 },
+
+];
+
+console.log(tablax)
+console.log(tabla)
+ // header values
+var headerNames = d3.keys(tabla[0]);
+
+headers = []
+
+console.log(headerNames[0])
+      
+        var headerValues = [headerNames[0],headerNames[1]
+                            ];
+
+        console.log(headerValues)                  
+        //cell values
+        var cellValues = [];
+        for (i = 0; i < headerValues.length; i++) {
+            console.log(headerValues[i])
+            cellValue = unpack(tabla, headerValues[i]);
+            console.log(cellValue)
+            cellValues[i] = cellValue;        
+
+        } 
+        // clean date
+        for (i = 0; i < cellValues[0].length; i++) {
+            var dateValue = cellValues[0][i]
+            cellValues[0][i] = dateValue
+            console.log(dateValue)
+        }
+
+
+// Organizar los datos para el gráfico
+var etiquetasc = headerValues.map(function(row) {
+    console.log(row)
+    return row[0];
+});
+
+var etiquetas = tablax.map(function(row) {
+    console.log(row)
+    console.log(row[0])
+    return row[0];
+});
+
+var valores = tablax.map(function(row) {
+  console.log('row----------------------------------------------------')
+  console.log(row)
+  console.log(row[1])
+  return row[1];
+
+});
+
+console.log(etiquetas)
+// console.log(valores)
+
+// Crear el objeto de datos para el gráfico de Pie Chart
+var data = [{
+  type: 'pie',
+  labels: etiquetas,
+  values: valores
+}];
+
+// Crear el objeto de diseño (layout) del gráfico
+var layout = {
+  title: 'Gráfico de Pie Chart',
+  showlegend: true
+};
+
+// Crear y mostrar el gráfico
+Plotly.newPlot('piecharts', data, layout);
+
+
+
+
+
+
+
+
+
+
+
+// Datos de ejemplo en forma de objetos
+var data = [
+  { Name: 'REPLAY', Horas: 47452, City: 'New York' },
+  { Name: 'LIVE', Horas: 2421095, City: 'London' },
+  { Name: 'VOD', Horas: 63526, City: 'Paris' },
+];
+
+console.log(data)
+
+// Obtener los nombres de las columnas
+var columnNames = Object.keys(data[0]);
+
+// Obtener los valores de cada objeto
+var cellData = data.map(function (row) {
+  return Object.values(row);
+});
+
+console.log(cellData)
+
+
+// Crear el trace de tipo tabla
+var tableTrace = {
+  type: 'table',
+  header: {
+    values: columnNames,
+    align: 'center',
+    line: { width: 1, color: 'black' },
+    fill: { color: 'grey' },
+    font: { family: 'Arial', size: 12, color: 'white' },
+  },
+  cells: {
+    values: cellData,
+    align: 'center',
+    line: { color: 'black', width: 1 },
+    font: { family: 'Arial', size: 11, color: ['black'] },
+    fill: { color: ['white', 'lightgrey'] },
+  },
+};
+
+// Crear el objeto de diseño (layout) del gráfico
+var layout = {
+  title: 'Tabla de Datos',
+};
+
+// Crear y mostrar el gráfico
+Plotly.newPlot('plotjson', [tableTrace], layout);
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+
+// Datos de ejemplo en forma de objetos
+var data = [
+  { Name: 'REPLAY', Horas: 47452, Representacion: '1.87%' },
+  { Name: 'LIVE', Horas: 2421095, Representacion: '95.62%' },
+  { Name: 'VOD', Horas: 63526, Representacion: '2.51%' },
+];
+
+// Calcular los valores y etiquetas para el gráfico de Pie Chart
+var ageValues = data.map(function (row) {
+  return row.Horas;
+});
+
+var ageLabels = data.map(function (row) {
+  return row.Name;
+});
+
+// Crear el trace de tipo Pie Chart
+var pieTrace = {
+  type: 'pie',
+  values: ageValues,
+  labels: ageLabels,  
+  domain: {x: [0.6, 1],y:[0,1]},
+ 
+};
+
+// Crear el objeto de diseño (layout) del gráfico
+var layout = {
+  title: 'Resumen General',
+  height: 280, // Altura del gráfico en píxeles
+  //margin: { t: 0, r: 0, l: 0, b: 0 },
+
+  //width: 400, // Ancho del gráfico en píxeles
+};
+
+// Crear y mostrar el gráfico
+//Plotly.newPlot('xxx', [pieTrace], layout);
+
+// var tableRows = data.map(row => Object.values(row));
+// console.log(tableRows)
+
+var headerNames = d3.keys(data[0]);
+    
+console.log(headerNames)
+
+var headerValues = [headerNames[0],headerNames[1],headerNames[2]];
+
+
+        // cell values
+        var cellValues = [];
+        for (i = 0; i < headerValues.length; i++) {
+            console.log(headerValues[i])
+            cellValue = unpack(data, headerValues[i]);
+            console.log(cellValue)
+            cellValues[i] = cellValue;
+            
+        }
+
+        console.log(cellValues[0])
+        console.log(cellValues[1])
+        // clean date
+        for (i = 0; i < cellValues[0].length; i++) {
+            var dateValue = cellValues[0][i]
+            cellValues[0][i] = dateValue
+            console.log(dateValue)
+        }
+
+        
+        //create table
+        var table = {
+            type: 'table',
+            columnwidth:  [400, 400,400,] ,
+            columnorder: [0,1,2],
+            header: {
+            values: headerValues,
+            align: "center",
+            line: {width: 1, color: 'rgb(50, 50, 50)'},
+            fill: {color: ['rgb(235, 100, 230)']},
+            font: {family: "Arial", size: 11, color: "white"}
+            },
+            cells: {
+            values: cellValues,
+            align: ["center", "center"],
+            line: {color: "black", width: 1},
+            fill: {color: ['rgb(235, 193, 238)', 'rgba(228, 222, 249, 0.65)']},
+            font: {family: "Arial", size: 10, color: ["black"]}
+            },
+            xaxis: 'x',
+            yaxis: 'y',
+            domain: {x: [0,0.5]}
+        }
+
+    // Crear el objeto de diseño (layout) del gráfico
+    // var layout = {
+    // title: 'Tabla de Datos',
+    // };
+
+    var config = {
+      displayModeBar: true, // Mostrar la barra de herramientas del gráfico
+      responsive: true, // Hacer que el gráfico sea responsive
+      staticPlot: false, // Permitir la interacción con el gráfico
+      // Opciones de estilo
+      style: {
+        userSelect: 'none', // Deshabilitar la selección del texto en el contenedor SVG
+      
+      },
+    };
+    // Crear y mostrar el gráfico
+    Plotly.newPlot('plotjson', [table,pieTrace], layout,config);
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
+    var data_dinamizado = [
+      { Name: 'Destacados', Horas: 546737.89, Representacion: 21.59 },
+      { Name: 'Mas vistos', Horas: 886413.63, Representacion: 31.05 },
+      { Name: 'Partidos', Horas: 162592.17, Representacion: 6.42 },
+    ];
+
+  // Calcular los valores y etiquetas para el gráfico de Pie Chart
+  var dinamizadoValues = data_dinamizado.map(function (row) {
+    return row.Representacion;
+  });
+
+  var dinamizadoLabels = data_dinamizado.map(function (row) {
+    return row.Name;
+  });
+
+  // Crear el trace de tipo Pie Chart
+  var pieTrace_dd = {
+    type: 'pie',
+    //values: [30, 40, 50],
+    //values: dinamizadoValues,
+    //labels: dinamizadoLabels, 
+    labels: ['Label 1', 'Label 2', 'Label 3'], // Etiquetas del gráfico 
+    text: ['30%', '40%', '50%'],
+    //hoverinfo: 'label+percent',
+    domain: {x: [0.6, 1],y:[0,1]}
+  };
+
+
+  var values = [21.59, 31.05, 6.42]; // Valores en porcentajes (sin el símbolo de porcentaje)
+
+  // Convertir los valores a porcentajes decimales
+  var valuesAsPercentages = values.map(function(value) {
+    return value / 100;
+  });
+
+  var pieTrace_d = {
+    type: 'pie',
+  values: valuesAsPercentages, // Valores del gráfico en porcentajes decimales
+  labels: ['Destacados', 'Mas vistos', 'Representacion'], // Etiquetas del gráfico
+  text: values.map(function(value) {
+    return value + '%'; // Agregar el símbolo de porcentaje al texto
+  }),
+  textinfo: 'text',
+  domain: {x: [0.7, 1],y: [0,1]}
+
+  //hoverinfo: 'label+text', // Mostrar etiquetas y valores en el hover
+};
+
+
+  // Crear el objeto de diseño (layout) del gráfico
+  var layout = {
+    title: 'Resumen dinamizado',    
+    height: 280, // Altura del gráfico en píxeles
+    //width: 500, // Ancho del gráfico en píxeles
+  };
+
+  var headerNames = d3.keys(data_dinamizado[0]);
+    
+console.log(headerNames)
+
+var headerValues = [headerNames[0],headerNames[1],headerNames[2]];
+
+
+        // cell values
+        var cellValues = [];
+        for (i = 0; i < headerValues.length; i++) {
+            console.log(headerValues[i])
+            cellValue = unpack(data_dinamizado, headerValues[i]);
+            console.log(cellValue)
+            cellValues[i] = cellValue;
+            
+        }
+
+        console.log(cellValues[0])
+        console.log(cellValues[1])
+        // clean date
+        for (i = 0; i < cellValues[0].length; i++) {
+            var dateValue = cellValues[0][i]
+            cellValues[0][i] = dateValue
+            console.log(dateValue)
+        }
+
+        //create table
+        var table_dina = {
+            type: 'table',
+            columnwidth:  [400, 400,400,] ,
+            columnorder: [0,1,2],
+            header: {
+            values: headerValues,
+            align: "center",
+            line: {width: 1, color: 'rgb(50, 50, 50)'},
+            fill: {color: ['rgb(235, 100, 230)']},
+            font: {family: "Arial", size: 11, color: "white"}
+            },
+            cells: {
+            values: cellValues,
+            align: ["center", "center"],
+            line: {color: "black", width: 1},
+            fill: {color: ['rgb(235, 193, 238)', 'rgba(228, 222, 249, 0.65)']},
+            font: {family: "Arial", size: 10, color: ["black"]}
+            },
+            xaxis: 'x',
+            yaxis: 'y',
+            domain: {x: [0,0.6]}
+        }
+
+        Plotly.newPlot('plotjson2', [table_dina,pieTrace_d], layout);
+    
+  </script>
+</body>
+</html>
